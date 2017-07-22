@@ -54,7 +54,7 @@ namespace MemoryGame.Controllers
 
 
         [HttpPost]
-        public HttpStatusCode NumbersPost(int answer)
+        public IActionResult NumbersPost(int answer)
         {
             var number = Convert.ToInt32(HttpContext.Session.GetString("Number"));
 
@@ -66,7 +66,7 @@ namespace MemoryGame.Controllers
 
             }
 
-            return HttpStatusCode.OK;
+            return RedirectToAction("Numbers");
         }
 
 

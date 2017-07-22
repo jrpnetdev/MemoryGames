@@ -7,12 +7,14 @@
     \___/|_|  | .__/\_\ \/ \___|\__/___,' \___| \_/  
               |_|                                    
 
+----
 
-###Purpose: 
+### Purpose: 
 
-My own implementation of a couple of memory games:
+My own implementation of 2 memory games:
 
 /Games/Icons
+
 /Games/Numbers
 
-###James Platt (JrpNetDev) July 2017
+*James Platt (JrpNetDev) July 2017*
