@@ -1,0 +1,55 @@
+﻿@inject IHttpContextAccessor HttpContextAccessor
+@using Microsoft.AspNetCore.Http
+@model int
+
+@{
+    ViewBag.Title = "Numbers";
+    Layout = "_Layout";
+}
+
+<h2>Numbers</h2>
+
+<div>Cuerrent level: <strong>@HttpContextAccessor.HttpContext.Session.GetString("Level")</strong></div>
+
+<div id="initialDisplay">
+    <p>Remember the following number:</p>
+    
+    <h2><strong>@Model</strong></h2>
+
+    <div id="countdown"></div>
+</div>
+
+<div id="answerDisplay">
+    <form asp-controller="Game" asp-action="NumbersPost" method="post">
+        <div class="form-group">
+            <label for="answer">Answer:</label>
+            <input type="text" class="form-control" name="answer" id="answer">
+        </div>
+        <button type="submit" class="btn btn-success">Submit</button>
+    </form>
+</div>
+
+
+@section Scripts
+{
+
+    <script src="~/js/jquery.countdown360.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" charset="utf-8">
+        $(function () {
+
+            $("#answerDisplay").hide();
+
+            $("#countdown").countdown360({
+                radius: 60,
+                seconds: 10,
+                fontColor: '#FFFFFF',
+                autostart: false,
+                onComplete: function() {
+                    $("#initialDisplay").hide();
+                    $("#answerDisplay").show();
+                }
+            }).start();
+        });
+        
+    </script>
+}

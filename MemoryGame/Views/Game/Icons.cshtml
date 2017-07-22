@@ -1,0 +1,93 @@
+﻿@inject IHttpContextAccessor HttpContextAccessor
+@using Microsoft.AspNetCore.Http
+@model MemoryGame.Models.IconViewModel
+
+@{
+    ViewBag.Title = "Icons";
+    Layout = "_Layout";
+}
+
+<h2>Icons</h2>
+
+<div>Cuerrent level: <strong>@HttpContextAccessor.HttpContext.Session.GetString("IconLevel")</strong></div>
+
+<div id="initialDisplay">
+    <p>Remember the following Icons:</p>
+    <div>
+        @foreach (var item in Model.InitIcons)
+        {
+            <i class="fa @item fa-5x"></i>
+        }
+    </div>
+    
+    <div id="countdown"></div>
+</div>
+    
+
+<div id="answerDisplay">
+    <p>Select Icons:</p>
+    @foreach (var item in Model.AllIcons)
+    {
+        <i class="fa @item fa-5x"></i>
+    }
+
+    <div><button class="btn btn-success" id="submit">Submit</button></div> 
+</div>
+
+@section Scripts
+{
+
+    <script src="~/js/jquery.countdown360.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" charset="utf-8">
+        $(function () {
+
+            var answers = [];
+
+            $("#answerDisplay i").on("click",
+                function () {
+                    $(this).toggleClass('selected');
+                });
+
+            $("#submit").on("click",
+                function () {
+
+                    $("#answerDisplay i").each(function () {
+                        if ($(this).hasClass("selected")) {
+                            answers.push($(this).attr("class"));
+                        }
+                    });
+
+                    var postData = { values: answers };
+
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("IconsPost")',
+                        data: postData,
+                        success: function() {
+                            window.location.href = '@Url.Action("Icons", "Game")';
+                        },
+                        error: function() {
+                            window.location.href = '@Url.Action("Icons", "Game")';
+                        },
+                        dataType: "json",
+                        traditional: true
+                    });
+                });
+
+
+            $("#answerDisplay").hide();
+
+            $("#countdown").countdown360({
+                radius: 60,
+                seconds: 10,
+                fontColor: '#FFFFFF',
+                autostart: false,
+                onComplete: function() {
+                    $("#initialDisplay").hide();
+                    $("#answerDisplay").show();
+                }
+            }).start();
+        });
+
+    </script>
+}
